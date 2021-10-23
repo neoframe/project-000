@@ -1,4 +1,4 @@
-import { GameObjects } from 'phaser';
+import { GameObjects, Physics } from 'phaser';
 
 import Bullets from './bullets';
 import playerIdleSprite from '../assets/player-idle.png';
@@ -58,16 +58,41 @@ export default class Player extends GameObjects.Sprite {
     this.scene.anims.create({
       key: 'jumping',
       frames: this.scene.anims
-        .generateFrameNumbers('player-jumping', { start: 0, end: 8 }),
-      frameRate: 5,
+        .generateFrameNumbers('player-jumping', { start: 0, end: 6 }),
+      frameRate: 20,
+      repeat: 0,
+    });
+
+    this.scene.anims.create({
+      key: 'falling',
+      frames: this.scene.anims
+        .generateFrameNumbers('player-jumping', { start: 7, end: 8 }),
+      frameRate: 20,
       repeat: 0,
     });
 
     this.scene.input.keyboard.on('keyup-UP', () => {
       this.canJump = true;
     });
+  }
 
-    this.anims.play('idle', true);
+  getAnimationName () {
+    if (this.body.velocity.y < 0) {
+      return 'jumping';
+    } else if (
+      this.body.velocity.y >= 0 &&
+      !this.body.touching.down &&
+      !this.body.onFloor()
+    ) {
+      return 'falling';
+    } else if (
+      this.body.velocity.x !== 0 &&
+      (this.body.touching.down || this.body.onFloor())
+    ) {
+      return 'moving';
+    } else {
+      return 'idle';
+    }
   }
 
   update () {
@@ -75,15 +100,12 @@ export default class Player extends GameObjects.Sprite {
 
     if (this.scene.cursors.left.isDown) {
       this.body.setVelocityX(-PLAYER_SPEED);
-      this.anims.play('moving', true);
       this.direction = 'left';
     } else if (this.scene.cursors.right.isDown) {
       this.body.setVelocityX(PLAYER_SPEED);
-      this.anims.play('moving', true);
       this.direction = 'right';
     } else {
       this.body.setVelocityX(0);
-      this.anims.play('idle', true);
     }
 
     if (
@@ -92,12 +114,18 @@ export default class Player extends GameObjects.Sprite {
       this.canJump
     ) {
       this.body.setVelocityY(-PLAYER_MAX_JUMP);
-      this.anims.play('jumping', true);
       this.canJump = false;
     }
 
     if (this.scene.cursors.space.isDown) {
       this.bullets.fire();
+    }
+
+    const animation = this.getAnimationName();
+
+    if (animation !== this.anims.getName()) {
+      this.scene.data.set('playerAnimation', animation);
+      this.anims.play(animation, true);
     }
   }
 }

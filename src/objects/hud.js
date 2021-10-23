@@ -18,6 +18,7 @@ export default class HUD {
       'Lives: ' + (this.scene.data.get('lives') || 0),
       'Score: ' + (this.scene.data.get('score') || 0),
       'Bullets fired: ' + this.scene.data.get('bulletsFired'),
+      'Player animation: ' + this.scene.data.get('playerAnimation'),
     ]);
   }
 }
