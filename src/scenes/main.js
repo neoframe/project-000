@@ -22,6 +22,7 @@ export default class MainScene extends Scene {
     this.physics.add.collider(wall, this.player);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.cameras.main.startFollow(this.player);
   }
 
   update () {
