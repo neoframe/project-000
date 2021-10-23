@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 
 import Player from '../objects/player';
+import HUD from '../objects/hud';
 
 export default class MainScene extends Scene {
   player = null;
@@ -8,6 +9,7 @@ export default class MainScene extends Scene {
 
   preload () {
     this.player = new Player(this, 50, 0, 0);
+    this.hud = new HUD(this);
   }
 
   create () {
@@ -21,26 +23,14 @@ export default class MainScene extends Scene {
     this.physics.add.collider(ground, this.player);
     this.physics.add.collider(wall, this.player);
 
+    this.hud.create();
+
     this.cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.startFollow(this.player);
   }
 
   update () {
     this.player.update();
-  }
-
-  initData () {
-    // this.data.set('lives', 3);
-    // this.data.set('level', 1);
-    // this.data.set('score', 0);
-
-    // var text = this.add
-    //  .text(10, 10, '', { font: '12px Courier', fill: '#ff0000' });
-
-    // text.setText([
-    //     'Level: ' + this.data.get('level'),
-    //     'Lives: ' + this.data.get('lives'),
-    //     'Score: ' + this.data.get('score')
-    // ]);
+    this.hud.update();
   }
 }

@@ -26,6 +26,7 @@ export default class Player extends GameObjects.Sprite {
   create () {
     this.setTexture('player-idle');
     this.setScale(2);
+    this.scene.data.set('bulletsFired', 0);
 
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
