@@ -10,12 +10,15 @@ const _ = new Game({
     default: 'arcade',
     arcade: {
       gravity: { y: WORLD_GRAVITY },
+      // debug: true,
+      // debugShowBody: true,
     },
   },
   fps: {
     target: FPS,
   },
   scale: {
+    zoom: 200,
     mode: Scale.RESIZE,
     autoCenter: Scale.CENTER_BOTH,
   },

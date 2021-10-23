@@ -15,8 +15,9 @@ export default class Bullets extends Physics.Arcade.Group {
     scene.load
       .spritesheet('bullet', bulletSprite, { frameWidth: 8, frameHeight: 8 });
 
+    // Create an empty pool of bullets to automatically create physics
     this.createMultiple({
-      frameQuantity: 1,
+      frameQuantity: 0,
       key: 'bullet',
       frame: 0,
       active: false,
@@ -31,6 +32,9 @@ export default class Bullets extends Physics.Arcade.Group {
       this.scene.data
         .set('bulletsFired', this.scene.data.get('bulletsFired') + 1);
       this.threshold = Date.now();
+
+      // getFirstDead -> will get the first inactive bullet in the pool
+      // true -> will create a new one if none is available
       this.getFirstDead(true)?.fire(this.player);
     }
   }

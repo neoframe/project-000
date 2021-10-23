@@ -4,6 +4,11 @@ import Bullets from './bullets';
 import playerIdleSprite from '../assets/player-idle.png';
 import playerMovingSprite from '../assets/player-moving.png';
 import playerJumpingSprite from '../assets/player-jumping.png';
+import {
+  PLAYER_GRAVITY,
+  PLAYER_MAX_JUMP,
+  PLAYER_SPEED,
+} from '../utils/settings';
 
 export default class Player extends GameObjects.Sprite {
   bullets = null;
@@ -30,7 +35,7 @@ export default class Player extends GameObjects.Sprite {
 
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
-
+    this.body.setGravityY(PLAYER_GRAVITY);
     this.body.setCollideWorldBounds(true);
 
     this.scene.anims.create({
@@ -68,11 +73,11 @@ export default class Player extends GameObjects.Sprite {
     this.setFlip(this.direction === 'left', false);
 
     if (this.scene.cursors.left.isDown) {
-      this.body.setVelocityX(-500);
+      this.body.setVelocityX(-PLAYER_SPEED);
       this.anims.play('moving', true);
       this.direction = 'left';
     } else if (this.scene.cursors.right.isDown) {
-      this.body.setVelocityX(500);
+      this.body.setVelocityX(PLAYER_SPEED);
       this.anims.play('moving', true);
       this.direction = 'right';
     } else {
@@ -85,7 +90,7 @@ export default class Player extends GameObjects.Sprite {
       (this.body.touching.down || this.body.onFloor()) &&
       this.canJump
     ) {
-      this.body.setVelocityY(-800);
+      this.body.setVelocityY(-PLAYER_MAX_JUMP);
       this.anims.play('jumping', true);
       this.canJump = false;
     }
