@@ -1,19 +1,20 @@
-import Phaser from 'phaser';
+import { Game, AUTO } from 'phaser';
 
+import { WORLD_GRAVITY, FPS } from './utils/settings';
 import Main from './scenes/main';
 
-new Phaser.Game({
-  type: Phaser.AUTO,
+const _ = new Game({
+  type: AUTO,
   width: 800,
   height: 600,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 2000 },
+      gravity: { y: WORLD_GRAVITY },
     },
   },
   fps: {
-    target: 60,
+    target: FPS,
   },
   pixelArt: true,
   scene: Main,

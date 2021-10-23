@@ -1,16 +1,13 @@
-import Phaser from 'phaser';
+import { Scene } from 'phaser';
 
-import Bullets from '../objects/bullets';
 import Player from '../objects/player';
 
-export default class MainScene extends Phaser.Scene {
+export default class MainScene extends Scene {
   player = null;
   cursors = null;
-  bullets = null;
 
   preload () {
     this.player = new Player(this, 50, 0, 0);
-    this.bullets = new Bullets(this, this.player);
   }
 
   create () {
@@ -22,19 +19,13 @@ export default class MainScene extends Phaser.Scene {
 
     this.player.create();
     this.physics.add.collider(ground, this.player);
-    this.physics.add.collider(wall, this.player)
+    this.physics.add.collider(wall, this.player);
 
     this.cursors = this.input.keyboard.createCursorKeys();
-    const spaceKey = this.input.keyboard.addKey('Space');
-    spaceKey.on('up', this.fire.bind(this))
   }
 
   update () {
     this.player.update();
-  }
-
-  fire () {
-    this.bullets.fireBullet();
   }
 
   initData () {
@@ -42,7 +33,8 @@ export default class MainScene extends Phaser.Scene {
     // this.data.set('level', 1);
     // this.data.set('score', 0);
 
-    // var text = this.add.text(10, 10, '', { font: '12px Courier', fill: '#ff0000' });
+    // var text = this.add
+    //  .text(10, 10, '', { font: '12px Courier', fill: '#ff0000' });
 
     // text.setText([
     //     'Level: ' + this.data.get('level'),
