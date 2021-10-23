@@ -8,6 +8,7 @@ import {
   PLAYER_GRAVITY,
   PLAYER_MAX_JUMP,
   PLAYER_SPEED,
+  SCALE,
 } from '../utils/settings';
 
 export default class Player extends GameObjects.Sprite {
@@ -30,7 +31,7 @@ export default class Player extends GameObjects.Sprite {
 
   create () {
     this.setTexture('player-idle');
-    this.setScale(2);
+    this.setScale(SCALE);
     this.scene.data.set('bulletsFired', 0);
 
     this.scene.physics.add.existing(this);

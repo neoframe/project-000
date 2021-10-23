@@ -18,7 +18,6 @@ const _ = new Game({
     target: FPS,
   },
   scale: {
-    zoom: 200,
     mode: Scale.RESIZE,
     autoCenter: Scale.CENTER_BOTH,
   },

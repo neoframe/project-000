@@ -4,6 +4,7 @@ import {
   BULLETS_GRAVITY,
   BULLETS_SPEED,
   BULLETS_VELOCITY,
+  SCALE,
   WORLD_GRAVITY,
 } from '../utils/settings';
 
@@ -21,12 +22,12 @@ export default class Bullet extends Physics.Arcade.Sprite {
     this.setSize(8, 8);
 
     // Sprites are too small
-    this.setScale(2);
+    this.setScale(SCALE);
 
     // Start by positionning the bullet at the end of the gun
     // depending on the direction of the player
     const direction = player.direction === 'left' ? -1 : 1;
-    this.body.reset(player.x + (35 * direction), player.y + 8);
+    this.body.reset(player.x + (17 * SCALE * direction), player.y + 4 * SCALE);
 
     // Create the bullet animation
     player.scene.anims.create({
