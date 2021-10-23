@@ -85,7 +85,8 @@ export default class Player extends GameObjects.Sprite {
 
     if (
       this.scene.cursors.up.isDown &&
-      this.body.touching.down && this.canJump
+      (this.body.touching.down || this.body.onFloor()) &&
+      this.canJump
     ) {
       this.body.setVelocityY(-800);
       this.anims.play('jumping', true);

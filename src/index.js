@@ -5,6 +5,7 @@ import Main from './scenes/main';
 
 const _ = new Game({
   type: AUTO,
+  backgroundColor: 0x222222,
   physics: {
     default: 'arcade',
     arcade: {

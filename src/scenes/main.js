@@ -13,6 +13,9 @@ export default class MainScene extends Scene {
   }
 
   create () {
+    this.add.rectangle(1000, 1000, 2000, 2000, 0x000000);
+    this.physics.world.setBounds(0, 0, 2000, 2000);
+
     const ground = this.add.rectangle(400, 575, 800, 50, 0xff0000);
     this.physics.add.existing(ground, true);
 
