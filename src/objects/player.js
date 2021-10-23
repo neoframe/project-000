@@ -45,7 +45,7 @@ export default class Player extends GameObjects.Sprite {
       key: 'moving',
       frames: this.scene.anims
         .generateFrameNumbers('player-moving', { start: 0, end: 9 }),
-      frameRate: 5,
+      frameRate: 10,
       repeat: -1,
     });
 
@@ -54,7 +54,7 @@ export default class Player extends GameObjects.Sprite {
       frames: this.scene.anims
         .generateFrameNumbers('player-jumping', { start: 0, end: 8 }),
       frameRate: 5,
-      repeat: -1,
+      repeat: 0,
     });
 
     this.scene.input.keyboard.on('keyup-UP', () => {
@@ -77,10 +77,7 @@ export default class Player extends GameObjects.Sprite {
       this.direction = 'right';
     } else {
       this.body.setVelocityX(0);
-
-      if (!this.canJump) {
-        this.anims.play('idle', true);
-      }
+      this.anims.play('idle', true);
     }
 
     if (
