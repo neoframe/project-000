@@ -1,15 +1,15 @@
-import { GameObjects, Physics } from 'phaser';
+import { GameObjects } from 'phaser';
 
-import Bullets from './bullets';
-import playerIdleSprite from '../assets/player-idle.png';
-import playerMovingSprite from '../assets/player-moving.png';
-import playerJumpingSprite from '../assets/player-jumping.png';
 import {
   PLAYER_GRAVITY,
   PLAYER_MAX_JUMP,
   PLAYER_SPEED,
   SCALE,
 } from '../utils/settings';
+import Bullets from './bullets';
+import playerIdleSprite from '../assets/images/player-idle.png';
+import playerMovingSprite from '../assets/images/player-moving.png';
+import playerJumpingSprite from '../assets/images/player-jumping.png';
 
 export default class Player extends GameObjects.Sprite {
   bullets = null;

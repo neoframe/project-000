@@ -2,7 +2,7 @@ import { Physics } from 'phaser';
 
 import { BULLETS_THRESHOLD } from '../utils/settings';
 import Bullet from './bullet';
-import bulletSprite from '../assets/bullet.png';
+import bulletSprite from '../assets/images/bullet.png';
 
 export default class Bullets extends Physics.Arcade.Group {
   player = null;
