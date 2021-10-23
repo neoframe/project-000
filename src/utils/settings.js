@@ -1,4 +1,4 @@
-export const BULLETS_SPEED = 1000;
+export const BULLETS_SPEED = 1500;
 export const BULLETS_THRESHOLD = 200;
 export const BULLETS_GRAVITY = 10;
 
