@@ -1,12 +1,10 @@
-import { Game, AUTO } from 'phaser';
+import { Game, Scale, AUTO } from 'phaser';
 
 import { WORLD_GRAVITY, FPS } from './utils/settings';
 import Main from './scenes/main';
 
 const _ = new Game({
   type: AUTO,
-  width: 800,
-  height: 600,
   physics: {
     default: 'arcade',
     arcade: {
@@ -15,6 +13,10 @@ const _ = new Game({
   },
   fps: {
     target: FPS,
+  },
+  scale: {
+    mode: Scale.RESIZE,
+    autoCenter: Scale.CENTER_BOTH,
   },
   pixelArt: true,
   scene: Main,
