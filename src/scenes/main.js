@@ -2,30 +2,42 @@ import { Scene } from 'phaser';
 
 import Player from '../objects/player';
 import HUD from '../objects/hud';
+import map0101 from '../assets/maps/01_01.json';
+import tileset from '../assets/images/tileset.png';
 
 export default class MainScene extends Scene {
   player = null;
   cursors = null;
+  map = null;
+  tileset = null;
+  foreground = null;
   obstacles = null;
 
   preload () {
+    this.load.image('tileset', tileset);
+    this.load.tilemapTiledJSON('map-01-01', map0101);
+
     this.player = new Player(this, 50, 0, 0);
     this.hud = new HUD(this);
   }
 
+  setMap (world, level) {
+    this.map = this.make.tilemap({ key: `map-${world}-${level}` });
+    this.tileset = this.map.addTilesetImage('tileset', 'tileset');
+    this.obstacles = this.map.createLayer('floor', this.tileset, 0, 0);
+    this.obstacles.setCollisionByExclusion(-1, true);
+    this.foreground = this.map.createLayer('foreground', this.tileset, 0, 0);
+    this.physics.world
+      .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+  }
+
   create () {
-    // Add viewport & background
-    this.add.rectangle(1000, 1000, 2000, 2000, 0x000000);
-    this.physics.world.setBounds(0, 0, 2000, 2000);
+    const background = this.add.rectangle(0, 0, 100, 100, 0x000000);
 
-    // Add ground & walls
-    this.obstacles = this.physics.add.staticGroup({ immovable: true });
+    this.setMap('01', '01');
 
-    const ground = this.add.rectangle(400, 575, 800, 50, 0xff0000);
-    this.obstacles.add(ground, true);
-
-    const wall = this.add.rectangle(800, 200, 20, 400, 0xff0000);
-    this.obstacles.add(wall, true);
+    background.setOrigin(0, 0);
+    background.setSize(this.map.widthInPixels, this.map.heightInPixels);
 
     // Add player & ammo
     this.player.create();
@@ -33,7 +45,7 @@ export default class MainScene extends Scene {
 
     // collide = stops
     // overlap = keeps going
-    this.physics.add.overlap(this.player.bullets, this.obstacles, bullet => {
+    this.physics.add.collider(this.player.bullets, this.obstacles, bullet => {
       bullet.destroy();
     });
 
@@ -45,6 +57,7 @@ export default class MainScene extends Scene {
 
     // Add camera
     this.cameras.main.startFollow(this.player);
+    this.cameras.main.setZoom(4);
   }
 
   update () {

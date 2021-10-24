@@ -4,7 +4,6 @@ import {
   PLAYER_GRAVITY,
   PLAYER_MAX_JUMP,
   PLAYER_SPEED,
-  SCALE,
 } from '../utils/settings';
 import Bullets from './bullets';
 import playerIdleSprite from '../assets/images/player-idle.png';
@@ -30,12 +29,12 @@ export default class Player extends GameObjects.Sprite {
   }
 
   create () {
-    this.setTexture('player-idle');
-    this.setScale(SCALE);
+    this.setTexture('player-idle', 0);
     this.scene.data.set('bulletsFired', 0);
 
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
+    this.body.setSize(19, 20);
     this.body.setGravityY(PLAYER_GRAVITY);
     this.body.setCollideWorldBounds(true);
 
