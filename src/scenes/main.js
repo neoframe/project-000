@@ -9,8 +9,6 @@ export default class MainScene extends Scene {
   player = null;
   cursors = null;
   map = null;
-  tileset = null;
-  foreground = null;
   obstacles = [];
 
   constructor () {
@@ -33,11 +31,11 @@ export default class MainScene extends Scene {
     this.map.layers.forEach(l => {
       const tileLayer = this.map.createLayer(l.name, this.tileset, 0, 0);
       const collide = l.properties
-        ?.some(p => p.name === 'collide' && p.value === true);
+        ?.some(p => p.name === 'collisions' && p.value === true);
 
-      // Add collisions to layers with collide: true property
+      // Avoid to include all layers as collisions layers to increase perfs
       if (collide) {
-        tileLayer.setCollisionByExclusion(-1, true);
+        tileLayer.setCollisionByProperty({ collides: true }, true);
         this.obstacles.push(tileLayer);
       }
     });
@@ -48,17 +46,22 @@ export default class MainScene extends Scene {
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
   }
 
+  setStartPosition () {
+    const startTile = this.map.objects
+      .find(l => l.name === 'player')?.objects[0];
+
+    if (startTile) {
+      this.player.setPosition(startTile.x, startTile.y);
+    }
+  }
+
   create () {
-    const background = this.add.rectangle(0, 0, 100, 100, 0x000000);
-
     this.setMap('01', '01');
-
-    background.setOrigin(0, 0);
-    background.setSize(this.map.widthInPixels, this.map.heightInPixels);
 
     // Add player & ammo
     this.player.create();
     this.physics.add.collider(this.player, this.obstacles);
+    this.setStartPosition();
 
     // collide = stops
     // overlap = keeps going
@@ -73,7 +76,8 @@ export default class MainScene extends Scene {
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setZoom(ZOOM);
 
-    // Add stats
+    // Add background & stats
+    this.scene.launch('Background');
     this.scene.launch('HUD');
   }
 

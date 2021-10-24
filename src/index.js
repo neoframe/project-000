@@ -3,6 +3,7 @@ import { Game, Scale, AUTO } from 'phaser';
 import { WORLD_GRAVITY, FPS } from './utils/settings';
 import Main from './scenes/main';
 import HUD from './scenes/hud';
+import Background from './scenes/background';
 
 const _ = new Game({
   type: AUTO,
@@ -23,5 +24,5 @@ const _ = new Game({
     autoCenter: Scale.CENTER_BOTH,
   },
   pixelArt: true,
-  scene: [Main, HUD],
+  scene: [Main, Background, HUD],
 });

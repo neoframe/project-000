@@ -41,7 +41,7 @@ export default class Player extends GameObjects.Sprite {
 
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
-    this.body.setSize(19, 20);
+    this.body.setSize(19, 15);
     this.body.setGravityY(PLAYER_GRAVITY);
     this.body.setCollideWorldBounds(true);
 

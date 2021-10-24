@@ -1,5 +1,6 @@
 export const FPS = 60;
 export const ZOOM = 4;
+export const BACKGROUND_PARALLAX_BASE_SPEED = 0.1;
 
 export const WORLD_GRAVITY = 2000;
 
