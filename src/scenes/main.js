@@ -2,7 +2,6 @@ import { Scene } from 'phaser';
 
 import { ZOOM } from '../utils/settings';
 import Player from '../objects/player';
-import HUD from '../objects/hud';
 import map0101 from '../assets/maps/01_01.json';
 import tileset from '../assets/images/tileset.png';
 
@@ -14,12 +13,15 @@ export default class MainScene extends Scene {
   foreground = null;
   obstacles = null;
 
+  constructor () {
+    super('MainScene');
+  }
+
   preload () {
     this.load.image('tileset', tileset);
     this.load.tilemapTiledJSON('map-01-01', map0101);
 
     this.player = new Player(this, 50, 0, 0);
-    this.hud = new HUD(this);
   }
 
   setMap (world, level) {
@@ -29,6 +31,8 @@ export default class MainScene extends Scene {
     this.obstacles.setCollisionByExclusion(-1, true);
     this.foreground = this.map.createLayer('foreground', this.tileset, 0, 0);
     this.physics.world
+      .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
   }
 
@@ -50,19 +54,18 @@ export default class MainScene extends Scene {
       bullet.destroy();
     });
 
-    // Add stats
-    this.hud.create();
-
     // Generate keys (arrows + space + enter)
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // Add camera
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setZoom(ZOOM);
+
+    // Add stats
+    this.scene.launch('HUD');
   }
 
   update () {
     this.player.update();
-    this.hud.update();
   }
 }

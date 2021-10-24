@@ -37,7 +37,7 @@ export default class Player extends GameObjects.Sprite {
 
   create () {
     this.setTexture('player-idle', 0);
-    this.scene.data.set('bulletsFired', 0);
+    this.scene.registry.set('bulletsFired', 0);
 
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
@@ -149,7 +149,7 @@ export default class Player extends GameObjects.Sprite {
     const animation = this.getAnimationName();
 
     if (animation !== this.anims.getName()) {
-      this.scene.data.set('playerAnimation', animation);
+      this.scene.registry.set('playerAnimation', animation);
       this.anims.play(animation, true);
     }
   }
