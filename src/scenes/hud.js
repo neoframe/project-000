@@ -14,9 +14,6 @@ export default class HUD extends Scene {
 
   update () {
     this.text.setText([
-      'Level: ' + (this.registry.get('level') || 0),
-      'Lives: ' + (this.registry.get('lives') || 0),
-      'Score: ' + (this.registry.get('score') || 0),
       'Bullets fired: ' + this.registry.get('bulletsFired'),
       'Player animation: ' + this.registry.get('playerAnimation'),
     ]);
