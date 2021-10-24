@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 
+import { ZOOM } from '../utils/settings';
 import Player from '../objects/player';
 import HUD from '../objects/hud';
 import map0101 from '../assets/maps/01_01.json';
@@ -57,7 +58,7 @@ export default class MainScene extends Scene {
 
     // Add camera
     this.cameras.main.startFollow(this.player);
-    this.cameras.main.setZoom(4);
+    this.cameras.main.setZoom(ZOOM);
   }
 
   update () {

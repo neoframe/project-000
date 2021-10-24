@@ -20,16 +20,17 @@ export default class Bullet extends Physics.Arcade.Sprite {
     // Start by positionning the bullet at the end of the gun
     // depending on the direction of the player
     const direction = player.direction === 'left' ? -1 : 1;
-    this.body.reset(player.x + (17 * direction), player.y + 4);
+    this.body.reset(player.x + (17 * direction), player.y + 3);
 
     // Create the bullet animation
     player.scene.anims.create({
       key: 'bullet',
       // Skipping a frame from the spritesheet because the last one is empty
       frames: player.scene.anims
-        .generateFrameNumbers('bullet', { start: 0, end: 6 }),
+        .generateFrameNumbers('bullet', { start: 0, end: 2 }),
       frameRate: 20,
       repeat: 0,
+      skipMissedFrames: false,
     });
 
     this.anims.play('bullet', true);

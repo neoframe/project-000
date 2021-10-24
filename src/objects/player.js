@@ -9,10 +9,13 @@ import Bullets from './bullets';
 import playerIdleSprite from '../assets/images/player-idle.png';
 import playerMovingSprite from '../assets/images/player-moving.png';
 import playerJumpingSprite from '../assets/images/player-jumping.png';
+import playerShootingSprite from '../assets/images/player-shooting.png';
+import playerMoveShootSprite from '../assets/images/player-moving-shooting.png';
 
 export default class Player extends GameObjects.Sprite {
   bullets = null;
   canJump = true;
+  shooting = false;
   direction = 'right';
 
   constructor (scene, ...args) {
@@ -20,7 +23,11 @@ export default class Player extends GameObjects.Sprite {
 
     scene.load.spritesheet('player-idle', playerIdleSprite,
       { frameWidth: 26, frameHeight: 22 });
+    scene.load.spritesheet('player-shooting', playerShootingSprite,
+      { frameWidth: 26, frameHeight: 22 });
     scene.load.spritesheet('player-moving', playerMovingSprite,
+      { frameWidth: 26, frameHeight: 22 });
+    scene.load.spritesheet('player-moving-shooting', playerMoveShootSprite,
       { frameWidth: 26, frameHeight: 22 });
     scene.load.spritesheet('player-jumping', playerJumpingSprite,
       { frameWidth: 26, frameHeight: 22 });
@@ -47,9 +54,25 @@ export default class Player extends GameObjects.Sprite {
     });
 
     this.scene.anims.create({
+      key: 'idle-shooting',
+      frames: this.scene.anims
+        .generateFrameNumbers('player-shooting', { start: 0, end: 1 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.scene.anims.create({
       key: 'moving',
       frames: this.scene.anims
         .generateFrameNumbers('player-moving', { start: 0, end: 9 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.scene.anims.create({
+      key: 'moving-shooting',
+      frames: this.scene.anims
+        .generateFrameNumbers('player-moving-shooting', { start: 0, end: 9 }),
       frameRate: 10,
       repeat: -1,
     });
@@ -88,9 +111,9 @@ export default class Player extends GameObjects.Sprite {
       this.body.velocity.x !== 0 &&
       (this.body.touching.down || this.body.onFloor())
     ) {
-      return 'moving';
+      return 'moving' + (this.shooting ? '-shooting' : '');
     } else {
-      return 'idle';
+      return 'idle' + (this.shooting ? '-shooting' : '');
     }
   }
 
@@ -117,7 +140,10 @@ export default class Player extends GameObjects.Sprite {
     }
 
     if (this.scene.cursors.space.isDown) {
+      this.shooting = true;
       this.bullets.fire();
+    } else {
+      this.shooting = false;
     }
 
     const animation = this.getAnimationName();
