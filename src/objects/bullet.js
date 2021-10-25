@@ -33,6 +33,17 @@ export default class Bullet extends Physics.Arcade.Sprite {
       skipMissedFrames: false,
     });
 
+    // Create the bullet animation
+    player.scene.anims.create({
+      key: 'bullet-impact',
+      // Skipping a frame from the spritesheet because the last one is empty
+      frames: player.scene.anims
+        .generateFrameNumbers('bullet-impact', { start: 0, end: 4 }),
+      frameRate: 20,
+      repeat: 0,
+      skipMissedFrames: false,
+    });
+
     this.anims.play('bullet', true);
 
     // Enable physics
@@ -49,7 +60,13 @@ export default class Bullet extends Physics.Arcade.Sprite {
     this.body.setCollideWorldBounds(true);
     this.body.onWorldBounds = true;
     this.body.world.on('worldbounds', body => {
-      body.gameObject.destroy();
+      body.setGravity(0, 0);
+      body.setVelocity(0, 0);
+      body.allowGravity = false;
+      body.gameObject.anims.play('bullet-impact', true);
+      body.gameObject.once('animationcomplete', () => {
+        body.gameObject.destroy();
+      });
     });
 
     // Enable the bullet

@@ -66,7 +66,13 @@ export default class MainScene extends Scene {
     // collide = stops
     // overlap = keeps going
     this.physics.add.collider(this.player.bullets, this.obstacles, bullet => {
-      bullet.destroy();
+      bullet.body.setGravity(0, 0);
+      bullet.body.setVelocity(0, 0);
+      bullet.body.allowGravity = false;
+      bullet.anims.play('bullet-impact', true);
+      bullet.once('animationcomplete', () => {
+        bullet.destroy();
+      });
     });
 
     // Generate keys (arrows + space + enter)

@@ -3,6 +3,7 @@ import { Physics } from 'phaser';
 import { BULLETS_THRESHOLD } from '../utils/settings';
 import Bullet from './bullet';
 import bulletSprite from '../assets/images/bullet.png';
+import bulletImpactSprite from '../assets/images/bullet-impact.png';
 
 export default class Bullets extends Physics.Arcade.Group {
   player = null;
@@ -12,8 +13,10 @@ export default class Bullets extends Physics.Arcade.Group {
     super(scene.physics.world, scene);
     this.player = player;
 
-    scene.load
-      .spritesheet('bullet', bulletSprite, { frameWidth: 8, frameHeight: 8 });
+    scene.load.spritesheet('bullet', bulletSprite,
+      { frameWidth: 8, frameHeight: 8 });
+    scene.load.spritesheet('bullet-impact', bulletImpactSprite,
+      { frameWidth: 20, frameHeight: 20 });
 
     // Create an empty pool of bullets to automatically create physics
     this.createMultiple({
