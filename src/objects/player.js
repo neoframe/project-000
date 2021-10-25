@@ -11,10 +11,12 @@ import playerMovingSprite from '../assets/images/player-moving.png';
 import playerJumpingSprite from '../assets/images/player-jumping.png';
 import playerShootingSprite from '../assets/images/player-shooting.png';
 import playerMoveShootSprite from '../assets/images/player-moving-shooting.png';
+import jumpDust from '../assets/images/player-jump-dust.png';
 
 export default class Player extends GameObjects.Sprite {
   bullets = null;
   canJump = true;
+  jumping = false;
   shooting = false;
   direction = 'right';
 
@@ -31,6 +33,8 @@ export default class Player extends GameObjects.Sprite {
       { frameWidth: 26, frameHeight: 22 });
     scene.load.spritesheet('player-jumping', playerJumpingSprite,
       { frameWidth: 26, frameHeight: 22 });
+    scene.load.spritesheet('jump-dust', jumpDust,
+      { frameWidth: 34, frameHeight: 10 });
 
     this.bullets = new Bullets(scene, this);
   }
@@ -96,6 +100,24 @@ export default class Player extends GameObjects.Sprite {
     this.scene.input.keyboard.on('keyup-UP', () => {
       this.canJump = true;
     });
+
+    this.dust = this.scene.add.sprite(this.x, this.y, 'jump-dust', 0);
+
+    this.scene.anims.create({
+      key: 'jump-dust',
+      frames: this.scene.anims
+        .generateFrameNumbers('jump-dust', { start: 0, end: 5 }),
+      frameRate: 10,
+      repeat: 0,
+    });
+
+    this.scene.anims.create({
+      key: 'fall-dust',
+      frames: this.scene.anims
+        .generateFrameNumbers('jump-dust', { start: 1, end: 5 }),
+      frameRate: 10,
+      repeat: 0,
+    });
   }
 
   getAnimationName () {
@@ -135,8 +157,20 @@ export default class Player extends GameObjects.Sprite {
       (this.body.touching.down || this.body.onFloor()) &&
       this.canJump
     ) {
+      this.dust.anims.play('jump-dust', true);
+      this.dust.setPosition(this.x, this.y + 7);
+
       this.body.setVelocityY(-PLAYER_MAX_JUMP);
+      this.jumping = true;
       this.canJump = false;
+    } else if (
+      (this.body.touching.down || this.body.onFloor()) &&
+      this.jumping
+    ) {
+      this.dust.anims.stop();
+      this.dust.anims.play('fall-dust', true);
+      this.dust.setPosition(this.x, this.y + 13);
+      this.jumping = false;
     }
 
     if (this.scene.cursors.space.isDown) {
