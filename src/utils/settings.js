@@ -12,3 +12,5 @@ export const BULLETS_SPEED = 500;
 export const BULLETS_THRESHOLD = 150;
 export const BULLETS_GRAVITY = 10;
 export const BULLETS_VELOCITY = 500;
+
+export const ENEMY_SPEED = 50;

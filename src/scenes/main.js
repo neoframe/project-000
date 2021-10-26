@@ -2,11 +2,14 @@ import { Scene } from 'phaser';
 
 import { ZOOM } from '../utils/settings';
 import Player from '../objects/player';
+import Enemies from '../objects/enemies';
 import map0101 from '../assets/maps/01_01.json';
 import tileset from '../assets/images/tileset.png';
+import enemySprite from '../assets/images/enemy.png';
 
 export default class MainScene extends Scene {
   player = null;
+  enemies = null;
   cursors = null;
   map = null;
   obstacles = [];
@@ -18,6 +21,9 @@ export default class MainScene extends Scene {
   preload () {
     this.load.image('tileset', tileset);
     this.load.tilemapTiledJSON('map-01-01', map0101);
+
+    this.load.spritesheet('enemy', enemySprite,
+      { frameWidth: 26, frameHeight: 22 });
 
     this.player = new Player(this, 50, 0, 0);
   }
@@ -39,6 +45,14 @@ export default class MainScene extends Scene {
         this.obstacles.push(tileLayer);
       }
     });
+
+    const enemies = this.map.objects.find(layer =>
+      layer.properties?.some?.(p => p.name === 'enemies' && p.value === true)
+    );
+
+    if (enemies) {
+      this.enemies = new Enemies(this, enemies);
+    }
 
     this.physics.world
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -62,6 +76,9 @@ export default class MainScene extends Scene {
     this.player.create();
     this.physics.add.collider(this.player, this.obstacles);
     this.setStartPosition();
+
+    // Add enemies
+    this.enemies?.create();
 
     // collide = stops
     // overlap = keeps going
@@ -89,5 +106,6 @@ export default class MainScene extends Scene {
 
   update () {
     this.player.update();
+    this.enemies.update();
   }
 }
