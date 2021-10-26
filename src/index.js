@@ -12,8 +12,8 @@ const _ = new Game({
     default: 'arcade',
     arcade: {
       gravity: { y: WORLD_GRAVITY },
-      // debug: true,
-      // debugShowBody: true,
+      debug: true,
+      debugShowBody: true,
     },
   },
   fps: {
