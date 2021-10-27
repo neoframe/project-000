@@ -50,7 +50,6 @@ export default class Enemies extends Physics.Arcade.Group {
     enemy.body.setGravity(0, 0);
     enemy.body.setVelocity(0, 0);
     enemy.body.allowGravity = false;
-    enemy.enableBody = false;
     enemy.anims.play('enemy-dead', true);
     enemy.once('animationcomplete', () => {
       enemy.destroy();
