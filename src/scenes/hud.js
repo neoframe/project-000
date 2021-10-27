@@ -16,6 +16,7 @@ export default class HUD extends Scene {
     this.text.setText([
       'Bullets fired: ' + this.registry.get('bulletsFired'),
       'Player animation: ' + this.registry.get('playerAnimation'),
+      'Enemies killed: ' + this.registry.get('enemiesKilled'),
     ]);
   }
 }

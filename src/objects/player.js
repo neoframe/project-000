@@ -1,6 +1,7 @@
 import { GameObjects } from 'phaser';
 
 import {
+  PLAYER_DAMAGE,
   PLAYER_GRAVITY,
   PLAYER_MAX_JUMP,
   PLAYER_SPEED,
@@ -42,6 +43,7 @@ export default class Player extends GameObjects.Sprite {
   create () {
     this.setTexture('player-idle', 0);
     this.scene.registry.set('bulletsFired', 0);
+    this.scene.registry.set('enemiesKilled', 0);
 
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
@@ -118,6 +120,23 @@ export default class Player extends GameObjects.Sprite {
       frameRate: 10,
       repeat: 0,
     });
+
+    this.scene.physics.add.collider(this, this.scene.obstacles);
+    this.scene.physics.add
+      .overlap(this.bullets, this.scene.enemies, (bullet, enemy) => {
+        !bullet.used && enemy.damage(PLAYER_DAMAGE);
+        this.bullets.removeBullet(bullet);
+
+        if (enemy.isDead()) {
+          this.scene.registry
+            .set('enemiesKilled', this.scene.registry.get('enemiesKilled') + 1);
+          this.scene.enemies.removeEnemy(enemy);
+        }
+      });
+    this.scene.physics.add
+      .collider(this.bullets, this.scene.obstacles, bullet => {
+        this.bullets.removeBullet(bullet);
+      });
   }
 
   getAnimationName () {

@@ -6,6 +6,7 @@ import Enemies from '../objects/enemies';
 import map0101 from '../assets/maps/01_01.json';
 import tileset from '../assets/images/tileset.png';
 import enemySprite from '../assets/images/enemy.png';
+import enemyDeadSprite from '../assets/images/enemy-dead.png';
 
 export default class MainScene extends Scene {
   player = null;
@@ -23,6 +24,8 @@ export default class MainScene extends Scene {
     this.load.tilemapTiledJSON('map-01-01', map0101);
 
     this.load.spritesheet('enemy', enemySprite,
+      { frameWidth: 26, frameHeight: 22 });
+    this.load.spritesheet('enemy-dead', enemyDeadSprite,
       { frameWidth: 26, frameHeight: 22 });
 
     this.player = new Player(this, 50, 0, 0);
@@ -72,25 +75,12 @@ export default class MainScene extends Scene {
   create () {
     this.setMap('01', '01');
 
-    // Add player & ammo
-    this.player.create();
-    this.physics.add.collider(this.player, this.obstacles);
-    this.setStartPosition();
-
     // Add enemies
     this.enemies?.create();
 
-    // collide = stops
-    // overlap = keeps going
-    this.physics.add.collider(this.player.bullets, this.obstacles, bullet => {
-      bullet.body.setGravity(0, 0);
-      bullet.body.setVelocity(0, 0);
-      bullet.body.allowGravity = false;
-      bullet.anims.play('bullet-impact', true);
-      bullet.once('animationcomplete', () => {
-        bullet.destroy();
-      });
-    });
+    // Add player & ammo
+    this.player.create();
+    this.setStartPosition();
 
     // Generate keys (arrows + space + enter)
     this.cursors = this.input.keyboard.createCursorKeys();

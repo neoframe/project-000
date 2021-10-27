@@ -41,4 +41,15 @@ export default class Bullets extends Physics.Arcade.Group {
       this.getFirstDead(true)?.fire(this.player);
     }
   }
+
+  removeBullet (bullet) {
+    bullet.used = true;
+    bullet.body.setGravity(0, 0);
+    bullet.body.setVelocity(0, 0);
+    bullet.body.allowGravity = false;
+    bullet.anims.play('bullet-impact', true);
+    bullet.once('animationcomplete', () => {
+      bullet.destroy();
+    });
+  }
 }
