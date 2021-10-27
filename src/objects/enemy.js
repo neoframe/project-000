@@ -8,14 +8,14 @@ export default class Enemy extends GameObjects.Sprite {
 
   constructor (scene, objectTile, x, y) {
     super(scene, x, y, 'enemy', 0);
+    this.setTexture('enemy', 0);
 
     this.objectTile = objectTile;
     this.direction = 'right';
   }
 
   create () {
-    this.setTexture('enemy', 0);
-    this.play('enemy-moving', true);
+    this.anims.play('enemy-moving', true);
     this.body.setSize(19, 15);
   }
 

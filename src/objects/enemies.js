@@ -20,6 +20,7 @@ export default class Enemies extends Physics.Arcade.Group {
 
     this.layer.objects.forEach(o => {
       const enemy = new Enemy(this.scene, o, o.x, o.y);
+      this.scene.add.existing(enemy);
       this.add(enemy);
       enemy.create();
       this.enemies.push(enemy);
