@@ -27,7 +27,7 @@ export default class Bullet extends Physics.Arcade.Sprite {
       key: 'bullet',
       // Skipping a frame from the spritesheet because the last one is empty
       frames: this.scene.anims
-        .generateFrameNumbers('bullet', { start: 0, end: 2 }),
+        .generateFrameNumbers('bullet', { start: 0, end: 0 }),
       frameRate: 20,
       repeat: 0,
       skipMissedFrames: false,
