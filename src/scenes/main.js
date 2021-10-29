@@ -27,6 +27,8 @@ export default class MainScene extends Scene {
       { frameWidth: 26, frameHeight: 22 });
     this.load.spritesheet('enemy-dead', enemyDeadSprite,
       { frameWidth: 26, frameHeight: 22 });
+    this.load.spritesheet('enemy-shooting', enemyDeadSprite,
+      { frameWidth: 26, frameHeight: 22 });
 
     this.player = new Player(this, 50, 0, 0);
   }
@@ -97,5 +99,9 @@ export default class MainScene extends Scene {
   update () {
     this.player.update();
     this.enemies.update();
+  }
+
+  gameOver () {
+    this.setStartPosition();
   }
 }

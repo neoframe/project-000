@@ -1,6 +1,13 @@
-import { GameObjects, Tweens } from 'phaser';
+import { GameObjects, Math } from 'phaser';
 
-import { ENEMY_LIFE, ENEMY_SPEED } from '../utils/settings';
+import {
+  ENEMY_BULLET_THRESHOLD,
+  ENEMY_DAMAGE,
+  ENEMY_LIFE,
+  ENEMY_SIGHT,
+  ENEMY_SPEED,
+} from '../utils/settings';
+import Bullets from './bullets';
 
 export default class Enemy extends GameObjects.Sprite {
   direction = 'right';
@@ -14,15 +21,43 @@ export default class Enemy extends GameObjects.Sprite {
 
     this.objectTile = objectTile;
     this.direction = 'right';
+    this.bullets = new Bullets(scene, this, {
+      threshold: ENEMY_BULLET_THRESHOLD,
+    });
   }
 
   create () {
     this.anims.play('enemy-moving', true);
     this.body.setSize(19, 15);
     this.body.setImmovable(true);
+    this.body.setGravityY(0);
+
+    this.scene.physics.add
+      .overlap(this.bullets, this.scene.player, (player, bullet) => {
+        !bullet.used && player.damage(ENEMY_DAMAGE);
+        this.bullets.removeBullet(bullet);
+
+        if (player.isDead()) {
+          player.gameOver();
+          this.scene.gameOver();
+        }
+      });
   }
 
   update () {
+    const player = this.scene.player;
+
+    if (
+      this.body.bottom === player.body.bottom &&
+      Math.Distance.Between(this.x, this.y, player.x, player.y) < ENEMY_SIGHT &&
+      player.flipX !== this.flipX
+    ) {
+      this.fire();
+
+      return;
+    }
+
+    this.anims.play('enemy-moving', true);
     this.setFlip(this.direction === 'left', false);
     this.body
       .setVelocityX(this.direction === 'left' ? -ENEMY_SPEED : ENEMY_SPEED);
@@ -60,5 +95,11 @@ export default class Enemy extends GameObjects.Sprite {
         yoyo: true,
       });
     }
+  }
+
+  fire () {
+    this.body.setVelocityX(0);
+    this.anims.play('enemy-shooting', true);
+    this.bullets.fire();
   }
 }

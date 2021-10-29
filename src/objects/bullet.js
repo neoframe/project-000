@@ -8,10 +8,10 @@ import {
 } from '../utils/settings';
 
 export default class Bullet extends Physics.Arcade.Sprite {
-  player = null;
+  owner = null;
 
-  fire (player) {
-    this.player = player;
+  fire (owner) {
+    this.owner = owner;
 
     // Not setting these from the beginning creates a 32x32 physics body (??)
     this.setTexture('bullet', 0);
@@ -19,14 +19,14 @@ export default class Bullet extends Physics.Arcade.Sprite {
 
     // Start by positionning the bullet at the end of the gun
     // depending on the direction of the player
-    const direction = player.direction === 'left' ? -1 : 1;
-    this.body.reset(player.x + (17 * direction), player.y + 3);
+    const direction = owner.direction === 'left' ? -1 : 1;
+    this.body.reset(owner.x + (17 * direction), owner.y + 3);
 
     // Create the bullet animation
-    player.scene.anims.create({
+    this.scene.anims.create({
       key: 'bullet',
       // Skipping a frame from the spritesheet because the last one is empty
-      frames: player.scene.anims
+      frames: this.scene.anims
         .generateFrameNumbers('bullet', { start: 0, end: 2 }),
       frameRate: 20,
       repeat: 0,
@@ -34,10 +34,10 @@ export default class Bullet extends Physics.Arcade.Sprite {
     });
 
     // Create the bullet animation
-    player.scene.anims.create({
+    this.scene.anims.create({
       key: 'bullet-impact',
       // Skipping a frame from the spritesheet because the last one is empty
-      frames: player.scene.anims
+      frames: this.scene.anims
         .generateFrameNumbers('bullet-impact', { start: 0, end: 4 }),
       frameRate: 20,
       repeat: 0,
@@ -50,7 +50,7 @@ export default class Bullet extends Physics.Arcade.Sprite {
     this.enableBody = true;
     this.body.setGravityY(-(WORLD_GRAVITY - BULLETS_GRAVITY));
     this.body
-      .setGravityX(BULLETS_SPEED * (player.direction === 'left' ? -1 : 1));
+      .setGravityX(BULLETS_SPEED * (owner.direction === 'left' ? -1 : 1));
 
     // Setting it as immovable prevents gravity from making it bounce back when
     // colliding with the world boundaries
@@ -75,6 +75,6 @@ export default class Bullet extends Physics.Arcade.Sprite {
 
     // And finally set its velocity to make it move
     this
-      .setVelocityX(BULLETS_VELOCITY * (player.direction === 'left' ? -1 : 1));
+      .setVelocityX(BULLETS_VELOCITY * (owner.direction === 'left' ? -1 : 1));
   }
 }

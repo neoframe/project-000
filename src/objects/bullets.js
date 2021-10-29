@@ -6,12 +6,14 @@ import bulletSprite from '../assets/images/bullet.png';
 import bulletImpactSprite from '../assets/images/bullet-impact.png';
 
 export default class Bullets extends Physics.Arcade.Group {
-  player = null;
-  threshold = Date.now();
+  owner = null;
+  lastBullet = Date.now();
+  threshold = BULLETS_THRESHOLD;
 
-  constructor (scene, player) {
+  constructor (scene, owner, { threshold = BULLETS_THRESHOLD } = {}) {
     super(scene.physics.world, scene);
-    this.player = player;
+    this.owner = owner;
+    this.threshold = threshold;
 
     scene.load.spritesheet('bullet', bulletSprite,
       { frameWidth: 8, frameHeight: 8 });
@@ -31,14 +33,14 @@ export default class Bullets extends Physics.Arcade.Group {
 
   fire () {
     // Avoid firing 768754 bullets at the same time by setting a threshold
-    if (Date.now() - this.threshold > BULLETS_THRESHOLD) {
+    if (Date.now() - this.lastBullet > this.threshold) {
       this.scene.registry
         .set('bulletsFired', this.scene.registry.get('bulletsFired') + 1);
-      this.threshold = Date.now();
+      this.lastBullet = Date.now();
 
       // getFirstDead -> will get the first inactive bullet in the pool
       // true -> will create a new one if none is available
-      this.getFirstDead(true)?.fire(this.player);
+      this.getFirstDead(true)?.fire(this.owner);
     }
   }
 

@@ -26,6 +26,14 @@ export default class Enemies extends Physics.Arcade.Group {
       repeat: 0,
     });
 
+    scene.anims.create({
+      key: 'enemy-shooting',
+      frames: scene.anims
+        .generateFrameNumbers('enemy-shooting', { start: 0, end: 1 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
     this.layer.objects.forEach(o => {
       const enemy = new Enemy(this.scene, o, o.x, o.y);
       this.scene.add.existing(enemy);
@@ -52,6 +60,9 @@ export default class Enemies extends Physics.Arcade.Group {
     enemy.body.allowGravity = false;
     enemy.anims.play('enemy-dead', true);
     enemy.once('animationcomplete', () => {
+      enemy.active && this.scene.registry
+        .set('enemiesKilled', this.scene.registry.get('enemiesKilled') + 1);
+      enemy.setActive(false);
       enemy.destroy();
     });
   }

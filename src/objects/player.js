@@ -3,6 +3,7 @@ import { GameObjects } from 'phaser';
 import {
   PLAYER_DAMAGE,
   PLAYER_GRAVITY,
+  PLAYER_LIFE,
   PLAYER_MAX_JUMP,
   PLAYER_SPEED,
 } from '../utils/settings';
@@ -20,6 +21,7 @@ export default class Player extends GameObjects.Sprite {
   jumping = false;
   shooting = false;
   direction = 'right';
+  life = PLAYER_LIFE;
 
   constructor (scene, ...args) {
     super(scene, ...args);
@@ -128,8 +130,6 @@ export default class Player extends GameObjects.Sprite {
         this.bullets.removeBullet(bullet);
 
         if (enemy.isDead()) {
-          this.scene.registry
-            .set('enemiesKilled', this.scene.registry.get('enemiesKilled') + 1);
           this.scene.enemies.removeEnemy(enemy);
         }
       });
@@ -205,5 +205,36 @@ export default class Player extends GameObjects.Sprite {
       this.scene.registry.set('playerAnimation', animation);
       this.anims.play(animation, true);
     }
+  }
+
+  isDead () {
+    return this.life <= 0;
+  }
+
+  damage (damages) {
+    this.life -= damages;
+
+    if (this.damageAnimation) {
+      this.damageAnimation.remove();
+      this.damageAnimation = null;
+      this.setAlpha(1);
+    }
+
+    if (!this.isDead()) {
+      this.damageAnimation = this.scene.tweens.add({
+        targets: [this],
+        alpha: 0.2,
+        ease: 'Cubic.easeOut',
+        duration: 150,
+        repeat: 5,
+        yoyo: true,
+      });
+    }
+  }
+
+  gameOver () {
+    this.life = PLAYER_LIFE;
+    this.damageAnimation?.remove();
+    this.setAlpha(1);
   }
 }
