@@ -102,6 +102,7 @@ export default class MainScene extends Scene {
   }
 
   gameOver () {
+    this.registry.destroy();
     this.setStartPosition();
   }
 }

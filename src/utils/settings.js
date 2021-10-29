@@ -25,3 +25,4 @@ export const ENEMY_DAMAGE = 20;
 export const ENEMY_FIRE_THRESHOLD = 300;
 export const ENEMY_SIGHT = 50;
 export const ENEMY_BULLET_THRESHOLD = 300;
+export const ENEMY_SCORE_VALUE = 100;
