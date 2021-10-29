@@ -14,9 +14,11 @@ import playerJumpingSprite from '../assets/images/player-jumping.png';
 import playerShootingSprite from '../assets/images/player-shooting.png';
 import playerMoveShootSprite from '../assets/images/player-moving-shooting.png';
 import jumpDust from '../assets/images/player-jump-dust.png';
+import Grenades from './grenades';
 
 export default class Player extends GameObjects.Sprite {
   bullets = null;
+  grenades = null
   canJump = true;
   jumping = false;
   shooting = false;
@@ -40,6 +42,7 @@ export default class Player extends GameObjects.Sprite {
       { frameWidth: 34, frameHeight: 10 });
 
     this.bullets = new Bullets(scene, this);
+    this.grenades = new Grenades(scene, this);
   }
 
   create () {
@@ -198,6 +201,8 @@ export default class Player extends GameObjects.Sprite {
     } else {
       this.shooting = false;
     }
+
+    this.scene.input.keyboard.on('keydown-A', () => { this.grenades.throw(); });
 
     const animation = this.getAnimationName();
 

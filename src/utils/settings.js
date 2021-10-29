@@ -15,6 +15,10 @@ export const BULLETS_THRESHOLD = 150;
 export const BULLETS_GRAVITY = 10;
 export const BULLETS_VELOCITY = 500;
 
+export const GRENADE_VELOCITY_X = 200;
+export const GRENADE_VELOCITY_Y = -500;
+export const GRENADE_THRESHOLD = 600;
+
 export const ENEMY_SPEED = 50;
 export const ENEMY_LIFE = 100;
 export const ENEMY_DAMAGE = 20;
