@@ -5,6 +5,8 @@ import Main from './scenes/main';
 import HUD from './scenes/hud';
 import Background from './scenes/background';
 
+import './index.css';
+
 const _ = new Game({
   type: AUTO,
   backgroundColor: 0x222222,

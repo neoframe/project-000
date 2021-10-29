@@ -1,5 +1,6 @@
 import { Physics } from 'phaser';
 
+import { ENEMY_SCORE_VALUE } from '../utils/settings';
 import Enemy from './enemy';
 
 export default class Enemies extends Physics.Arcade.Group {
@@ -58,10 +59,15 @@ export default class Enemies extends Physics.Arcade.Group {
     enemy.body.setGravity(0, 0);
     enemy.body.setVelocity(0, 0);
     enemy.body.allowGravity = false;
+
+    enemy.once('animationstart', () => {
+      enemy.active && this.scene.registry.set('score',
+        (this.scene.registry.get('score') || 0) + ENEMY_SCORE_VALUE);
+    });
+
     enemy.anims.play('enemy-dead', true);
+
     enemy.once('animationcomplete', () => {
-      enemy.active && this.scene.registry
-        .set('enemiesKilled', this.scene.registry.get('enemiesKilled') + 1);
       enemy.setActive(false);
       enemy.destroy();
     });

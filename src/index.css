@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'm6x11';
+  font-weight: normal;
+  font-style: normal;
+  src:  /* local('m6x11'), */
+        url('./assets/fonts/m6x11.woff2') format('woff2'),
+        url('./assets/fonts/m6x11.woff') format('woff');
+};

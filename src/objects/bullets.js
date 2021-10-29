@@ -34,8 +34,6 @@ export default class Bullets extends Physics.Arcade.Group {
   fire () {
     // Avoid firing 768754 bullets at the same time by setting a threshold
     if (Date.now() - this.lastBullet > this.threshold) {
-      this.scene.registry
-        .set('bulletsFired', this.scene.registry.get('bulletsFired') + 1);
       this.lastBullet = Date.now();
 
       // getFirstDead -> will get the first inactive bullet in the pool

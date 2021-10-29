@@ -46,7 +46,7 @@ export default class Player extends GameObjects.Sprite {
     this.setTexture('player-idle', 0);
     this.scene.registry.set('bulletsFired', 0);
     this.scene.registry.set('enemiesKilled', 0);
-
+    this.scene.registry.set('score', 0);
     this.scene.physics.add.existing(this);
     this.scene.add.existing(this);
     this.body.setSize(19, 15);
@@ -73,7 +73,7 @@ export default class Player extends GameObjects.Sprite {
       key: 'moving',
       frames: this.scene.anims
         .generateFrameNumbers('player-moving', { start: 0, end: 9 }),
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1,
     });
 
