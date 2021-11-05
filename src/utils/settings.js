@@ -7,7 +7,8 @@ export const WORLD_GRAVITY = 2000;
 export const PLAYER_MAX_JUMP = 600;
 export const PLAYER_GRAVITY = 200;
 export const PLAYER_SPEED = 150;
-export const PLAYER_LIFE = 100;
+export const PLAYER_HEALTH = 100;
+export const PLAYER_LIVES = 3;
 export const PLAYER_DAMAGE = 20;
 
 export const BULLETS_SPEED = 500;

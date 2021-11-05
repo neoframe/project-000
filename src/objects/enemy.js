@@ -36,11 +36,6 @@ export default class Enemy extends GameObjects.Sprite {
       .overlap(this.bullets, this.scene.player, (player, bullet) => {
         !bullet.used && player.damage(ENEMY_DAMAGE);
         this.bullets.removeBullet(bullet);
-
-        if (player.isDead()) {
-          player.gameOver();
-          this.scene.gameOver();
-        }
       });
   }
 

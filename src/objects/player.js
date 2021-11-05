@@ -3,7 +3,8 @@ import { GameObjects } from 'phaser';
 import {
   PLAYER_DAMAGE,
   PLAYER_GRAVITY,
-  PLAYER_LIFE,
+  PLAYER_HEALTH,
+  PLAYER_LIVES,
   PLAYER_MAX_JUMP,
   PLAYER_SPEED,
 } from '../utils/settings';
@@ -23,7 +24,8 @@ export default class Player extends GameObjects.Sprite {
   jumping = false;
   shooting = false;
   direction = 'right';
-  life = PLAYER_LIFE;
+  health = PLAYER_HEALTH;
+  lives = 3;
 
   constructor (scene, ...args) {
     super(scene, ...args);
@@ -213,11 +215,11 @@ export default class Player extends GameObjects.Sprite {
   }
 
   isDead () {
-    return this.life <= 0;
+    return this.health <= 0;
   }
 
   damage (damages) {
-    this.life -= damages;
+    this.health -= damages;
 
     if (this.damageAnimation) {
       this.damageAnimation.remove();
@@ -234,12 +236,28 @@ export default class Player extends GameObjects.Sprite {
         repeat: 5,
         yoyo: true,
       });
+    } else {
+      this.loseLife();
     }
   }
 
+  loseLife () {
+    if (this.lives <= 0) {
+      this.gameOver();
+
+      return;
+    }
+
+    this.lives -= 1;
+    this.health = PLAYER_HEALTH;
+    this.scene.setStartPosition();
+  }
+
   gameOver () {
-    this.life = PLAYER_LIFE;
+    this.health = PLAYER_HEALTH;
+    this.lives = PLAYER_LIVES;
     this.damageAnimation?.remove();
     this.setAlpha(1);
+    this.scene.gameOver();
   }
 }
