@@ -1,6 +1,9 @@
-import { Physics } from 'phaser';
+import { Math, Physics } from 'phaser';
 
-import { BULLETS_THRESHOLD, GRENADE_THRESHOLD } from '../utils/settings';
+import {
+  BULLETS_THRESHOLD,
+  GRENADE_THRESHOLD,
+} from '../utils/settings';
 import Grenade from './grenade';
 import grenadeSprite from '../assets/images/grenades.png';
 
@@ -37,18 +40,30 @@ export default class Grenades extends Physics.Arcade.Group {
 
       // getFirstDead -> will get the first inactive bullet in the pool
       // true -> will create a new one if none is available
-      this.getFirstDead(true)?.throw(this.owner);
+      this.getFirstDead(true)?.throw(this, this.owner);
     }
   }
 
-  // removeGrenade (bullet) {
-  //   bullet.used = true;
-  //   bullet.body.setGravity(0, 1);
-  //   bullet.body.setVelocity(0, 0);
-  //   bullet.body.allowGravity = false;
-  //   bullet.anims.play('bullet-impact', true);
-  //   bullet.once('animationcomplete', () => {
-  //     bullet.destroy();
-  //   });
-  // }a
+  removeGrenade (grenade) {
+    grenade.used = true;
+    grenade.body.setGravity(0, 0);
+    grenade.body.setVelocity(0, 0);
+    grenade.body.allowGravity = false;
+    grenade.anims.play('bullet-impact', true);
+
+    const closest = this.scene.physics.closest(grenade.body)?.gameObject;
+
+    if (
+      closest &&
+      Math.Distance.Between(
+        grenade.body.x, grenade.body.y, closest.body.x, closest.body.y
+      ) < 30
+    ) {
+      closest.damage?.(grenade.damages);
+    }
+
+    grenade.once('animationcomplete', () => {
+      grenade.destroy();
+    });
+  }
 }

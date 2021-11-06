@@ -133,15 +133,15 @@ export default class Player extends GameObjects.Sprite {
       .overlap(this.bullets, this.scene.enemies, (bullet, enemy) => {
         !bullet.used && enemy.damage(PLAYER_DAMAGE);
         this.bullets.removeBullet(bullet);
-
-        if (enemy.isDead()) {
-          this.scene.enemies.removeEnemy(enemy);
-        }
       });
     this.scene.physics.add
       .collider(this.bullets, this.scene.obstacles, bullet => {
         this.bullets.removeBullet(bullet);
       });
+
+    this.scene.physics.add.collider(this.grenades, this.scene.obstacles);
+
+    this.scene.input.keyboard.on('keydown-A', () => { this.grenades.throw(); });
   }
 
   getAnimationName () {
@@ -203,8 +203,6 @@ export default class Player extends GameObjects.Sprite {
     } else {
       this.shooting = false;
     }
-
-    this.scene.input.keyboard.on('keydown-A', () => { this.grenades.throw(); });
 
     const animation = this.getAnimationName();
 

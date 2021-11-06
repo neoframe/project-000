@@ -89,6 +89,8 @@ export default class Enemy extends GameObjects.Sprite {
         repeat: 5,
         yoyo: true,
       });
+    } else {
+      this.scene.enemies.removeEnemy(this);
     }
   }
 
